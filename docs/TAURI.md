@@ -59,7 +59,51 @@ For details on upgrading Tauri dependencies, refer to the [official documentatio
 
 - `npm run tauri:dev` — run Tauri in development mode.
 
+- `npm run tauri:build` — build a production-ready installer for your local platform.
+
 - `npm run tauri` — placeholder, which allows you to run [Tauri CLI](https://v2.tauri.app/reference/cli/) commands with `npm run tauri {COMMAND}`.
+
+## Building Local Installers
+
+To create a local installer for your platform, follow these steps:
+
+### Prerequisites
+
+1. **Rust must be installed**: Ensure [Rust is installed](https://tauri.app/start/prerequisites/#rust) on your system.
+2. **Web app must be built first**: Build the web application before creating the installer.
+
+### Build Steps
+
+```bash
+# 1. Install dependencies (if not already done)
+npm install
+
+# 2. Build the web application
+npm run build:production
+
+# 3. Build the Tauri installer
+npm run tauri:build
+```
+
+### Output Location
+
+After a successful build, installers will be created in the `tauri/target/release/bundle/` directory:
+
+- **macOS**: `tauri/target/release/bundle/macos/Tapir.app` (app bundle) and `tauri/target/release/bundle/dmg/` (DMG installer)
+- **Windows**: `tauri/target/release/bundle/nsis/` (NSIS installer)
+- **Linux**: `tauri/target/release/bundle/appimage/` (AppImage)
+
+### Platform-Specific Notes
+
+- **macOS**: Building requires Xcode Command Line Tools. The build produces both a `.app` bundle and a `.dmg` installer.
+- **Windows**: The NSIS installer will be unsigned in local builds. For distribution, code signing is required (configured in CI/CD).
+- **Linux**: The AppImage format works on most Linux distributions without installation.
+
+### Important Notes
+
+- Local builds **do not include auto-update functionality**. Auto-updates require signing keys and configuration that are only available in the CI/CD pipeline.
+- Each platform build must be done on its respective operating system (you cannot build a macOS app on Windows, or vice versa).
+- Debug builds can be created with `npm run tauri build -- --debug` for faster iteration during development.
 
 ## Implementation specifics
 

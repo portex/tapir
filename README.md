@@ -24,6 +24,12 @@ Obtain API ID and API hash on [my.telegram.org](https://my.telegram.org) and pop
 npm run dev
 ```
 
+## Building Desktop Applications
+
+This project supports building native desktop applications for Windows, macOS, and Linux using Tauri.
+
+For detailed instructions on building local installers, see the [Tauri documentation](docs/TAURI.md).
+
 ### Invoking API from console
 
 Start your dev server and locate GramJS worker in console context.
