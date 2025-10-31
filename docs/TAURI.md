@@ -28,7 +28,7 @@ Since it's based on native OS WebView, you must compile application separately f
 
 ## Installation
 
-To run Tauri locally, ensure that [Rust is installed](https://tauri.app/start/prerequisites/#rust).
+To run Tauri locally, ensure that [Rust is installed](https://v2.tauri.app/start/prerequisites/#rust).
 
 ## Upgrading dependencies
 
@@ -75,7 +75,7 @@ To create a local installer for your platform, follow these steps:
 
 ### Prerequisites
 
-1. **Rust must be installed**: Ensure [Rust is installed](https://tauri.app/start/prerequisites/#rust) on your system.
+1. **Rust must be installed**: Ensure [Rust is installed](https://v2.tauri.app/start/prerequisites/#rust) on your system.
 2. **Web app must be built first**: Build the web application before creating the installer.
 
 ### Build Steps
