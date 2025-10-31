@@ -53,6 +53,6 @@
       }
     }
   },
-  "identifier": "org.telegram.TelegramAir",
-  "productName": "Telegram Air"
+  "identifier": "org.telegram.Tapir",
+  "productName": "Tapir"
 }

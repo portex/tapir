@@ -1357,6 +1357,7 @@
 "FormattingBoldAria" = "Bold text";
 "FormattingItalicAria" = "Italic text";
 "FormattingMonospaceAria" = "Monospace text";
+"FormattingBlockquoteAria" = "Quote";
 "FormattingUnderlineAria" = "Underlined text";
 "FormattingStrikethroughAria" = "Strikethrough text";
 "FormattingAddLinkAria" = "Add Link";
