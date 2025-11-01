@@ -1,4 +1,6 @@
 dist/build-stats.json
+public/build-stats.json
+public/statoscope-report.html
 node_modules
 .cache
 .env
@@ -11,3 +13,4 @@ dev/perf/screenshot*
 .DS_store
 .github/workflows/*
 !.github/workflows/package-and-publish.yml
+dist-electron/
