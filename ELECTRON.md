@@ -64,8 +64,10 @@ The Electron build includes:
 
 Electron-specific configuration can be found in:
 - `package.json` - Under the `build` section
-- `electron/main.cjs` - Main process code
+- `electron/main.cjs` - Main process code (uses port 1234 to match webpack dev server)
 - `electron/preload.cjs` - Preload script for security
+
+**Note**: The `main` field in `package.json` is set to `electron/main.cjs` for Electron builds. This doesn't affect web builds as they use webpack's entry point.
 
 ## Comparison with Tauri
 
