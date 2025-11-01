@@ -5,8 +5,10 @@
   "author": "PORTEX Labs. (portexlabs@gmail.com)",
   "license": "GPL-3.0-or-later",
   "type": "module",
-  "main": "index.js",
+  "main": "electron/main.cjs",
   "scripts": {
+    "electron:dev": "concurrently \"cross-env BROWSER=none npm run dev\" \"wait-on http://localhost:1234 && cross-env NODE_ENV=development ELECTRON_START_URL=http://localhost:1234 electron .\"",
+    "electron:build": "npm run build:production && electron-builder",
     "dev": "cross-env APP_ENV=development webpack serve --mode development",
     "dev:mocked": "cross-env APP_ENV=test APP_MOCKED_CLIENT=1 webpack serve --mode development --port 1235",
     "build:dev": "webpack --mode development && bash ./deploy/copy_to_dist.sh",
@@ -77,6 +79,8 @@
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.2",
     "dotenv": "^17.2.3",
+    "electron": "^39.0.0",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.37.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jest": "^29.0.1",
@@ -120,6 +124,7 @@
     "tsx": "^4.20.6",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.46.0",
+    "wait-on": "^9.0.1",
     "webpack": "^5.102.1",
     "webpack-dev-server": "^5.2.2"
   },
@@ -151,5 +156,60 @@
   },
   "browserslist": [
     "baseline widely available"
-  ]
+  ],
+  "build": {
+    "appId": "org.telegram.tapir",
+    "productName": "Tapir",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "public/**/*",
+      "!node_modules",
+      "!src"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "public/icon-192x192.png",
+      "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Tapir"
+    },
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "icon": "public/icon-192x192.png",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Network",
+      "icon": "public/icon-192x192.png",
+      "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"
+    },
+    "protocols": [
+      {
+        "name": "tg",
+        "schemes": [
+          "tg"
+        ]
+      }
+    ]
+  }
 }
