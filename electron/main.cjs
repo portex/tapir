@@ -1,8 +1,6 @@
 const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
 
-// Configuration
-const DEV_SERVER_PORT = 1234; // Must match webpack.config.ts devServer port
 let mainWindow;
 
 function createWindow() {
@@ -66,7 +64,7 @@ app.setAsDefaultProtocolClient('tg');
 app.on('open-url', (event, url) => {
   event.preventDefault();
   // Only process tg:// protocol URLs for security
-  if (url.startsWith('tg://') && mainWindow) {
+  if (url.startsWith('tg://') && mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.webContents.send('deep-link', url);
   }
 });
