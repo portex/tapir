@@ -31,6 +31,12 @@ To create production builds:
 npm run electron:build
 ```
 
+Or use the helper script that checks prerequisites:
+
+```bash
+bash deploy/electron-build-test.sh
+```
+
 This will:
 1. Build the production web bundle
 2. Create platform-specific installers

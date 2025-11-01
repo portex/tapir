@@ -24,6 +24,30 @@ Obtain API ID and API hash on [my.telegram.org](https://my.telegram.org) and pop
 npm run dev
 ```
 
+## Desktop Applications
+
+This project supports building native desktop applications:
+
+### Electron (Windows EXE, macOS, Linux)
+For detailed instructions on building with Electron, see [ELECTRON.md](./ELECTRON.md).
+
+```sh
+# Development
+npm run electron:dev
+
+# Build installers
+npm run electron:build
+```
+
+### Tauri (Rust-based, smaller binaries)
+```sh
+# Development  
+npm run tauri:dev
+
+# Build installers
+npm run tauri:build
+```
+
 ### Invoking API from console
 
 Start your dev server and locate GramJS worker in console context.
