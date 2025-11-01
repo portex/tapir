@@ -15,6 +15,8 @@ Since it's based on native OS WebView, you must compile application separately f
   - [Output Location](#output-location)
   - [Platform-Specific Notes](#platform-specific-notes)
   - [Important Notes](#important-notes)
+  - [Configuration for Local Builds](#configuration-for-local-builds)
+  - [Troubleshooting](#troubleshooting)
 - [Implementation specifics](#implementation-specifics)
   - [Accessing the Tauri API](#accessing-the-tauri-api)
   - [Custom header on MacOS](#custom-header-on-macos)
@@ -110,6 +112,33 @@ After a successful build, installers will be created in the `tauri/target/releas
 - Local builds **do not include auto-update functionality**. Auto-updates require signing keys and configuration that are only available in the CI/CD pipeline.
 - Each platform build must be done on its respective operating system (you cannot build a macOS app on Windows, or vice versa).
 - Debug builds can be created with `npm run tauri build -- --debug` for faster iteration during development.
+
+### Configuration for Local Builds
+
+**Important**: Before building, you must configure `tauri/tauri.conf.json` to use local files instead of localhost:
+
+```json
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1234",
+    "frontendDist": "../dist",  // Change from "http://localhost:1234" to "../dist"
+    "removeUnusedCommands": true
+  }
+}
+```
+
+This tells Tauri to bundle the files from the `dist/` directory (created by `npm run build:production`) instead of trying to load from a development server.
+
+### Troubleshooting
+
+**Error: "Command plugin:event... not allowed by ACL"**
+- This indicates missing permissions in `tauri/capabilities/default.json`
+- Ensure the file includes: `"core:event:allow-listen"` and `"core:event:allow-emit"`
+
+**Error: Application shows "localhost:1234" or connection errors**
+- You haven't changed `frontendDist` in `tauri/tauri.conf.json` to `"../dist"`
+- The application is trying to connect to the dev server instead of using bundled files
 
 ## Implementation specifics
 
