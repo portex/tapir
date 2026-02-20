@@ -1,7 +1,9 @@
 const { app, BrowserWindow, session, systemPreferences } = require('electron');
 const path = require('path');
 
-// Request permissions on macOS
+// Modern Chrome User-Agent — Telegram won't ask to "update"
+const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+
 async function requestMacPermissions() {
   if (process.platform === 'darwin') {
     await systemPreferences.askForMediaAccess('microphone');
@@ -21,48 +23,42 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       webSecurity: true,
-      // Allow media access
       allowRunningInsecureContent: false,
     },
     backgroundColor: '#17212b',
   });
 
-  // Handle permission requests (microphone, camera, screen share, notifications)
+  // Set modern User-Agent so Telegram doesn't complain about version
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['User-Agent'] = USER_AGENT;
+    callback({ requestHeaders: details.requestHeaders });
+  });
+
+  // Handle permission requests
   session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
     const allowed = [
-      'media',
-      'microphone',
-      'camera',
-      'display-capture',
-      'screen',
-      'notifications',
-      'geolocation',
-      'clipboard-read',
-      'clipboard-sanitized-write',
+      'media', 'microphone', 'camera', 'display-capture',
+      'screen', 'notifications', 'geolocation',
+      'clipboard-read', 'clipboard-sanitized-write',
     ];
     callback(allowed.includes(permission));
   });
 
-  // Handle permission checks
   session.defaultSession.setPermissionCheckHandler((webContents, permission) => {
     const allowed = ['media', 'microphone', 'camera', 'display-capture', 'notifications'];
     return allowed.includes(permission);
   });
 
-  // Handle screen/display capture (for screen sharing)
   session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
-    // Return all available sources for screen sharing
     callback({ video: 'screen' });
   });
 
-  win.loadURL('https://web.telegram.org/a/');
+  win.loadURL('https://web.telegram.org/a/', { userAgent: USER_AGENT });
 
-  // Force title to always stay "Tapir" regardless of what the page sets
   win.on('page-title-updated', (event) => {
     event.preventDefault();
   });
 
-  // Open links in the same window
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https://web.telegram.org')) {
       return { action: 'allow' };
@@ -71,7 +67,6 @@ function createWindow() {
     return { action: 'deny' };
   });
 
-  // Hide menu bar (optional, press Alt to show)
   win.setMenuBarVisibility(false);
 }
 
