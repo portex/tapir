@@ -3,7 +3,11 @@
   "version": "1.0.1",
   "description": "Tapir — Telegram Web Client",
   "main": "main.js",
-  "author": "Tapir",
+  "author": {
+    "name": "Tapir",
+    "email": "portexlabs@gmail.com"
+  },
+  "homepage": "https://github.com/portex/tapir",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
@@ -49,7 +53,8 @@
     "linux": {
       "target": ["AppImage", "deb"],
       "icon": "icon.png",
-      "category": "Network"
+      "category": "Network",
+      "maintainer": "Portex Labs. <portexlabs@gmail.com>"
     },
     "nsis": {
       "oneClick": false,
