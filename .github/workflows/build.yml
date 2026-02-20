@@ -1,0 +1,72 @@
+name: Build Tapir
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:  # Позволяет запускать вручную из интерфейса GitHub
+
+jobs:
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        working-directory: electron
+        run: npm install
+      - name: Build Windows
+        working-directory: electron
+        run: npm run build:win
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tapir-Windows
+          path: electron/dist/Tapir Setup *.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        working-directory: electron
+        run: npm install
+      - name: Build macOS
+        working-directory: electron
+        run: npm run build:mac
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false  # Пропускаем подпись
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tapir-macOS
+          path: electron/dist/*.dmg
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        working-directory: electron
+        run: npm install
+      - name: Build Linux
+        working-directory: electron
+        run: npm run build:linux
+      - name: Upload Linux AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tapir-Linux-AppImage
+          path: electron/dist/*.AppImage
+      - name: Upload Linux deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tapir-Linux-deb
+          path: electron/dist/*.deb
